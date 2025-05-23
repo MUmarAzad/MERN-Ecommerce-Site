@@ -2,7 +2,7 @@ FROM node:24-alpine
 WORKDIR /
 COPY package*.json ./
 RUN npm install
-RUN npm rebuild bcrypt --build-from-source
+RUN npm run build
 COPY . .
 
 
@@ -15,4 +15,4 @@ ENV PORT=5000
 
 EXPOSE 5000
 
-CMD ["node", "server.js"]
+CMD ["npm", "run", "start"] 
