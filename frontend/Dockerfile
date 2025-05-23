@@ -1,13 +1,15 @@
-FROM node:20-alpine AS builder
-WORKDIR /
+FROM node:24-alpine
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=builder /app/build ./build
-RUN npm install -g serve
-EXPOSE 5000
-CMD ["serve", "-s", "build", "-l", "5000"]
+ARG REACT_APP_BASE_URL
+
+ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

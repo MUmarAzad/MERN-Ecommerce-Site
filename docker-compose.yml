@@ -5,33 +5,27 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      args: 
+        MONGO_URL: mongodb+srv://umarazadwork:Ia4x1XIoQ1ZsBNxU@devops.jyv3lli.mongodb.net/?retryWrites=true&w=majority&appName=DevOps
+        SECRET_KEY: cheentakpaktmtm
     container_name: web_backend
     ports:
-      - "3000:3000"
+      - "5000:5000"
     environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - MONGODB_URI=mongodb+srv://umarazadwork:Ia4x1XIoQ1ZsBNxU@devops.jyv3lli.mongodb.net/?retryWrites=true&w=majority&appName=DevOps
-    volumes:
-      - ./backend:/app
-    networks:
-      - shop-sphere-network
+      - PORT=5000
+      - MONGO_URL=mongodb+srv://umarazadwork:Ia4x1XIoQ1ZsBNxU@devops.jyv3lli.mongodb.net/?retryWrites=true&w=majority&appName=DevOps
+
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        REACT_APP_BASE_URL: http://backend:5000
     container_name: web_frontend
     ports:
-      - "5000:5000"
+      - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - PORT=5000
+      - PORT=3000
     depends_on:
       - backend
-    networks:
-      - shop-sphere-network
-
-networks:
-  shop-sphere-network:
-    driver: bridge
